@@ -1,2 +1,2 @@
 # RealTimeDataReactApp
-GHW August : Realtime Data App
+GHW August Data: Realtime Data App
