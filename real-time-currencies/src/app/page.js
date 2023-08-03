@@ -2,39 +2,35 @@
 import Image from 'next/image'
 import styles from './page.module.css'
 import { useState, useEffect } from 'react'
+import CandlestickChart from './CandlestickChart';
 
 export default function Home() {
-  const [pokeData,setPokeData] = useState({})
-  const [pokemonImage,setPokemonImage] = useState('')
-  useEffect(()=>{
+
+  const [polygonData, setPolygonData] = useState([]);
+
+  useEffect(() => {
     async function getInfo() {
       try {
-        const response = await fetch('https://pokeapi.co/api/v2/pokemon/ditto')
+        const APIKEY = `TvOFx2ekQd_7oFrYAYpqNMlYu5NFOeQf`;
+        const apiUrl = `https://api.polygon.io/v2/aggs/ticker/AAPL/range/1/minute/2023-01-09/2023-01-09?adjusted=true&sort=asc&limit=120&apiKey=${APIKEY}`;
+        const response = await fetch(apiUrl);
         const jsonData = await response.json();
-        setPokeData(jsonData)
-        setPokemonImage(jsonData.sprites.front_default)
-      }catch(error) {
-        console.error(error)
+        setPolygonData(jsonData);
+      } catch (error) {
+        console.error(error);
       }
     }
-    getInfo()
-  },[])
+    getInfo();
+  }, []);
 
-  useEffect(()=> {
-    console.log("Hey my value is ",pokeData)
-  },[pokeData])
+  useEffect(() => {
+    console.log("Hey my value is ", polygonData);
+  }, [polygonData]);
 
   return (
     <main className={styles.main}>
-      <h1>Hello World!</h1>
-      {pokemonImage && pokeData ?
-        <>
-          <img src={pokemonImage} alt={pokeData.name} width={200} height={200} />
-          <h2>{pokeData.name}</h2>
-        </>
-        :
-        <p></p>
-      }
+      <h1>Polygon Candlestick Chart Example</h1>
+      <CandlestickChart />
     </main>
-  )
-}
+  );
+  }
